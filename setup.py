@@ -7,6 +7,8 @@ with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
 # allow setup.py to be run from any path
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
+def _requires_from_file(filename):
+        return open(filename).read().splitlines()
 setup(
     name='drf_allauthmail',
     version='0.0.1',
@@ -17,12 +19,8 @@ setup(
     long_description=README,
     url='https://github.com/fumuumuf/drf_allauthmail/',
     author='fumuumuf',
-    author_email='petitlycee11235@example.com',
-    install_requires=[
-        'Django>=2.0.0',
-        'djangorestframework>=3.8.2',
-        'django-allauth>=0.36.0',
-    ],
+    author_email='kitosiro2@gmail.com',
+    install_requires=_requires_from_file('requirements.txt'),
     classifiers=[
         'Environment :: Web Environment',
         'Framework :: Django',
