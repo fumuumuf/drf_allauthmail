@@ -2,8 +2,6 @@ from allauth.account.forms import AddEmailForm
 from allauth.account.models import EmailAddress
 from rest_framework import serializers
 
-from . import app_settings
-
 
 class EmailAddressSerializer(serializers.ModelSerializer):
     form_class = AddEmailForm
@@ -35,15 +33,10 @@ class EmailAddressSerializer(serializers.ModelSerializer):
         """
         create a entity with send confirm e-mail
         """
-
-        email = EmailAddress.objects.add_email(self.get_request(),
-                                               self.user,
-                                               validated_data['email'],
-                                               confirm=True)  # type:EmailAddress
-
-        if app_settings.ALLAUTHMAIL_SET_PRIMARY_AT_VERIFIED:
-            email.set_as_primary()
-        return email
+        return EmailAddress.objects.add_email(self.get_request(),
+                                              self.user,
+                                              validated_data['email'],
+                                              confirm=True)
 
     def get_request(self):
         return self.context.get('request')
