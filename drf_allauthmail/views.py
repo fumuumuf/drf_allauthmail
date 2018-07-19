@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from rest_framework.serializers import Serializer
 from rest_framework.viewsets import GenericViewSet
 
-from drf_allauthmails.serializers import EmailAddressSerializer
+from .serializers import EmailAddressSerializer
 
 
 class EmailViewSet(
