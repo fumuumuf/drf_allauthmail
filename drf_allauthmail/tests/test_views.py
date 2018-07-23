@@ -18,20 +18,20 @@ class EmailListTest(APITestCase):
 
     def test_anonymous_user_cant_access(self):
         response = self.client.get(self.url)
-        assert response.status_code == status.HTTP_403_FORBIDDEN, response.status_code
+        assert response.status_code in (status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN), response.status_code
 
     def test_list(self):
         self.client.force_authenticate(user=self.user1)
         response = self.client.get(self.url)
         assert response.status_code == status.HTTP_200_OK, response.status_code
         response_json = response.json()
-        assert len(response_json) == 1, response_json
+        assert len(response_json['results']) == 1, response_json
 
         self.client.force_authenticate(user=self.user2)
         response = self.client.get(self.url)
         assert response.status_code == status.HTTP_200_OK, response.status_code
         response_json = response.json()
-        assert len(response_json) == 6, response_json
+        assert len(response_json['results']) == 6, response_json
 
     def test_add_email_with_send_confirm_mail(self):
         self.client.force_authenticate(user=self.user1)

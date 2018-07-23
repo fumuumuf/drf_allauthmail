@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from rest_framework.serializers import Serializer
 from rest_framework.viewsets import GenericViewSet
 
-from drf_allauthmails.serializers import EmailAddressSerializer
+from .serializers import EmailAddressSerializer
 
 
 class EmailViewSet(
@@ -26,7 +26,8 @@ class EmailViewSet(
 
         serializer_class = self.get_serializer_class()
         kwargs['context'] = self.get_serializer_context()
-        return serializer_class(user=self.request.user, *args, **kwargs)
+        user = self.request.user if self.request else None
+        return serializer_class(user=user, *args, **kwargs)
 
     def initial(self, *args, **kwargs):
         super(EmailViewSet, self).initial(*args, **kwargs)
