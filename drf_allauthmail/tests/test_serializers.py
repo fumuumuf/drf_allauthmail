@@ -2,7 +2,7 @@ from allauth.account import utils  as allauth_utils
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
-from drf_allauthmails.serializers import EmailAddressSerializer
+from drf_allauthmail.serializers import EmailAddressSerializer
 
 
 class TestCreateArticleSerializer(TestCase):
