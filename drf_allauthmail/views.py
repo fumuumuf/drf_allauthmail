@@ -19,6 +19,10 @@ class EmailViewSet(
     CreateModelMixin,
     DestroyModelMixin,
     GenericViewSet):
+    """
+    manage logged in user's e-mail addresses.
+    """
+
     permission_classes = (IsAuthenticated,)
     serializer_class = EmailAddressSerializer
 
@@ -57,6 +61,9 @@ class EmailViewSet(
 
     @action(methods=['put'], detail=True)
     def set_as_primary(self, request, pk=None):
+        """
+        set a specific e-mail as primary
+        """
         email_address = self.get_object()
         if not email_address.verified and \
                 EmailAddress.objects.filter(user=request.user,
@@ -82,6 +89,10 @@ class EmailViewSet(
 
     @action(methods=['post'], detail=True)
     def sent_confirmation(self, request, pk=None):
+        """
+        send confirmation e-mail to a specific e-mail address
+        """
+
         email_address = self.get_object()
         email_address.send_confirmation(request)
         return Response({_('Confirmation e-mail sent to the e-mail address')})
