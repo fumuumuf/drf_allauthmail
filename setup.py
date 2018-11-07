@@ -11,7 +11,7 @@ def _requires_from_file(filename):
         return open(filename).read().splitlines()
 setup(
     name='drf_allauthmail',
-    version='0.0.2',
+    version='0.0.3',
     packages=find_packages(),
     include_package_data=True,
     license='MIT License',
