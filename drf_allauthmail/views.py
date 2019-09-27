@@ -14,21 +14,15 @@ from rest_framework.viewsets import GenericViewSet
 from .serializers import EmailAddressSerializer
 
 
-class EmailViewSet(
-    ListModelMixin,
-    RetrieveModelMixin,
-    CreateModelMixin,
-    DestroyModelMixin,
-    GenericViewSet):
+class EmailViewSet(ListModelMixin, RetrieveModelMixin, CreateModelMixin, DestroyModelMixin, GenericViewSet):
     """
-    manage logged in user's e-mail addresses.
+    ログインユーザーの email を管理するエンドポイント
     """
 
     permission_classes = (IsAuthenticated,)
     serializer_class = EmailAddressSerializer
 
     def get_serializer(self, *args, **kwargs):
-
         serializer_class = self.get_serializer_class()
         kwargs['context'] = self.get_serializer_context()
         user = self.request.user if self.request else None
@@ -40,7 +34,10 @@ class EmailViewSet(
         sync_user_email_addresses(self.request.user)
 
     def get_queryset(self):
-        return self.request.user.emailaddress_set.all()
+        if not self.request:  # for api-docs
+            return EmailAddress.objects.all()
+
+        return EmailAddress.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer: Serializer):
         email_address = serializer.save()
