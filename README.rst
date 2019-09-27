@@ -1,6 +1,6 @@
-=====
+===============
 drf_allauthmail
-=====
+===============
 
 drf_allauthmail provide REST endpoints of allauth's EmailAddress Model.
 
