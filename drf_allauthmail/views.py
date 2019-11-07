@@ -17,6 +17,12 @@ from .serializers import EmailAddressSerializer
 class EmailViewSet(ListModelMixin, RetrieveModelMixin, CreateModelMixin, DestroyModelMixin, GenericViewSet):
     """
     ログインユーザーの email を管理するエンドポイント
+
+    create:
+    新しい email を登録します.
+
+    destroy:
+    email を削除します. primary の email は削除できません.
     """
 
     permission_classes = (IsAuthenticated,)
@@ -34,7 +40,7 @@ class EmailViewSet(ListModelMixin, RetrieveModelMixin, CreateModelMixin, Destroy
         sync_user_email_addresses(self.request.user)
 
     def get_queryset(self):
-        if not self.request:  # for api-docs
+        if not self.request or not self.request.user.is_authenticated:  # for api-docs
             return EmailAddress.objects.all()
 
         return EmailAddress.objects.filter(user=self.request.user)
@@ -72,7 +78,6 @@ class EmailSubActionAPIView(APIView):
 
 
 class SentConfirmationView(EmailSubActionAPIView):
-
     def post(self, request, *args, **kwargs):
         """
         send confirmation e-mail to a specific e-mail address
